@@ -1,46 +1,33 @@
-# 🐞 Ladybug Garden (Game Project 1)
+# 🐌 Snail Mail Delivery Game
 
-A 2D physics-based precision platformer featuring momentum-based movement mechanics, variable gravity states, and dynamic event-driven game states. 
+A 2D top-down precision platformer featuring state-driven inventory validation, temporal speed-modifiers, and emergent routing paths.
 
-## Project Links
-* **Live Playable Build:** **[snail.elenav.me](https://snail.elenav.me)**
-* **Source Code:** **[GitHub Repository (Game Scripts)](https://github.com/elenav24/ladybug-garden-scripts)**
-
----
-
-## Core Mechanics & Features
-
-- **Momentum-Based Movement** — Implemented comprehensive horizontal vector shifts alongside a custom "glide" mechanic that modifies the dynamic fallback velocity when the primary jump key is sustained.
-- **Stackable Status Effects** — Developed a temporal buffer system that dynamically updates runtime speed variables for 10 seconds upon collision triggers, supporting linear time-stacking for consecutive power-up collections.
-- **State-Driven Environmental Interactions** — Engineered distinct physical layer configurations where objects dynamically shift behavior based on contact normal vectors (e.g., solid top-surface platforming vs. zero-friction side collisions).
-- **Asynchronous Loop Control** — Designed decoupled game execution cycles to handle real-time pauses, scene reloading, and structural application teardowns cleanly.
+## Project Link
+* **Live WebGL Build:** **[snail.elenav.me](https://snail.elenav.me)**
 
 ---
 
-## System Architecture & Class Breakdown
+## Core Features & Architecture
 
-The codebase is organized using a highly decoupled component-driven architecture built over the native Unity runtime framework:
-
-### Player & Physics Engineering
-* **`PlayerMovement.cs`:** Governs horizontal kinematics and vertical impulse forces. Houses custom arithmetic logic to step down localized gravity constraints to simulate sustained gliding.
-* **`CameraFollow.cs`:** Calculates interpolated target vectors per rendering frame to smoothly track the player across screen-space thresholds.
-* **`DeathZone.cs`:** Acts as a bounding-box trigger matrix, executing an automated scene reset hook whenever positional coordinates fall outside defined boundary indexes.
-
-### Game Lifecycle & UI Orchestration
-* **`GameManager.cs` & `PauseMenu.cs`:** Manages operational canvas switching (Main Menu, Active Game, Pause State, and Win Screens). Features scalable control blocks to safely pause structural application systems and capture global escape keys.
-* **`Goal.cs`:** Handles absolute end-of-level validation when connecting with target entities, systematically pausing global physics clocks while invoking final canvas states.
-* **`FlowerBoost.cs`:** Operates as a decoupled script component attached to power-up matrices, orchestrating clean property updates directly into the player's core physics runtime variables.
+- **Asynchronous Coroutines (`playerMovement.cs`):** Utilizes C# `IEnumerator` blocks to handle time-restricted velocity modifiers (1.5x Sugar Cube speed-boost / 0.5x Water Puddle friction damping).
+- **Decoupled Animation Anchors:** Implemented an isolated nested parenting hierarchy to drive sinusoidal floating animations on the local Y-axis without polluting global world coordinates.
+- **State-Driven Inventory Gating (`snailInventory.cs` & `Goal.cs`):** Manages boolean item collection states to dynamically toggle trigger colliders, audio layers, and rendering states at the goal mailbox.
+- **Data Persistence Pipeline (`saveManager.cs`):** Uses `PlayerPrefs` to cache global runtime volume mixers and store level completion progress (Star Rankings) across system sessions.
+- **UI Lifecycle Control (`pauseManager.cs` & `menuManager.cs`):** Freezes the global execution clock (`Time.timeScale`) and intercepts input arrays to route canvas overlays smoothly.
 
 ---
 
-## Tech Stack & Asset Pipeline
+## Progression & Scene Breakdown
 
-### Engine & Code Architecture
-* **Engine:** Unity
-* **Language:** C# (.NET Core Framework)
-* **Design Pattern:** Component-Based Architecture / Event-Driven State Changes
+* **Main Menu:** Handles system configurations, audio mixer overrides, and level indexing.
+* **Level 1 (Tutorial):** Sandbox designed to isolate core 8-directional kinematics and delivery mechanics.
+* **Level 2 (Speed Dilation):** Introduces speed-boost optimization over an expanded grid layout.
+* **Level 3 (Emergence):** Combines power-ups and water hazards to force user path optimization.
 
-### Design & Asset Production
-* **Deployment Pipeline:** Unity WebGL Compiler hosted on static edge deployment
-* **Sprite Assets:** Custom low-overhead pixel artwork generated via **Piskel** (Piskelapp)
-* **Interface Design:** UI design frames, text matrices, and informational canvases drafted via **Canva** and compiled directly into native Unity UI assets
+---
+
+## Tech Stack & Credits
+
+* **Engine & Language:** Unity | C# (.NET)
+* **Design & Asset Production:** Piskel (Custom assets), Unity UI Canvas, Unity Tilemaps
+* **Third-Party Assets:** Itch.io (Cozy UI Kit, Nature Tileset, Snail Pack), Uppbeat/Pixabay (Audio layers)
